@@ -1,0 +1,27 @@
+{
+  "name": "mutant-detector-meli",
+  "version": "1.0.0",
+  "description": "Mercadolibre Mutants Test",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc --lines 80 mocha --bail ./tests"
+  },
+  "author": "Sergio Pietri",
+  "license": "ISC",
+  "dependencies": {
+    "ajv": "^7.2.1",
+    "chai": "^4.3.3",
+    "chai-http": "^4.3.0",
+    "express": "^4.17.1",
+    "mocha": "^8.3.1",
+    "nodemon": "^2.0.7",
+    "nyc": "^15.1.0",
+    "pg": "^8.5.1",
+    "sinon": "^9.2.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.21.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}
