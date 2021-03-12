@@ -1,114 +1,112 @@
 const DNAAnalyzer = module.exports;
 
-const mutantPattern = ["AAAA", "TTTT", "CCCC", "GGGG"]
-
-DNAAnalyzer.isMutant = (sequence) => {
-
-    if (horizontal(sequence) || vertical(sequence) || diagonal(sequence)){
-        return true
-    }
-
-    return false
-}
-
+const mutantPattern = ['AAAA', 'TTTT', 'CCCC', 'GGGG'];
 
 function vertical(matrix) {
-    for (let j = 0 ; j < matrix[0].length ; j++) {
+  let counter = 0;
+  for (let j = 0; j < matrix[0].length; j++) {
+    let sequence = '';
 
-        let sequence = '';
-
-        for (let i = 0 ; i < matrix.length ; i++) {
-            sequence += matrix[i][j];
-        }
-
-        const result = mutantPattern.map(xgen => sequence.includes(xgen)) 
-        
-        if (result.includes(true)){
-            return true
-        }
+    for (let i = 0; i < matrix.length; i++) {
+      sequence += matrix[i][j];
     }
-    return false;
+
+    const result = mutantPattern.map((xgen) => sequence.includes(xgen));
+
+    if (result.includes(true)) {
+      counter += 1;
+    }
+  }
+  return counter;
 }
 
 function horizontal(matrix) {
-    for (let j = 0 ; j < matrix[0].length ; j++) {
-
-        let sequence = '';
-
-        for (let i = 0 ; i < matrix.length ; i++) {
-            sequence += matrix[i][j];
-        }
-
-        const result = mutantPattern.map(xgen => sequence.includes(xgen))
-        
-        if (result.includes(true)){
-            return true
-        }
-    }
-    return false;
-}
-
-function rightDiagonal(matrix){
+  let counter = 0;
+  for (let j = 0; j < matrix[0].length; j++) {
     let sequence = '';
 
-    for(let j = 0; j < matrix.length; j ++){
-        for(let i = 0; i < matrix.length; i++){
-            if(i+j >= matrix.length)
-                break   ;
-            sequence += matrix[i].charAt(i+j);
-        }
-        let result = mutantPattern.map(xgen => sequence.includes(xgen))
-
-        if (result.includes(true)){
-            return true
-        }
+    for (let i = 0; i < matrix.length; i++) {
+      sequence += matrix[j][i];
     }
 
-    for(let j = 1; j < matrix.length; j ++){
-        for(let i = 0; i < matrix.length; i++){
-            if(i+j >= matrix.length)
-                break;
-            sequence += matrix[i + j].charAt(i);
-        }
-        let result = mutantPattern.map(xgen => sequence.includes(xgen))
-       
-        if (result.includes(true)){
-            return true
-        }
-    }
+    const result = mutantPattern.map((xgen) => sequence.includes(xgen));
 
-    return false
+    if (result.includes(true)) {
+      counter += 1;
+    }
+  }
+  return counter;
 }
 
-function leftDiagonal(matrix){
-    let sequence = '';
-    
-    for(let j = 0; j < matrix.length; j++){
-        for(let i = j; i >= 0; i--){
-            sequence += matrix[j - i].charAt(i);
-        }
-        let result = mutantPattern.map(xgen => sequence.includes(xgen))
+function rightDiagonal(matrix) {
+  let sequence = '';
+  let counter = 0;
 
-        if (result.includes(true)){
-            return true
-        }
+  for (let j = 0; j < matrix.length; j++) {
+    for (let i = 0; i < matrix.length; i++) {
+      if (i + j >= matrix.length) break;
+      sequence += matrix[i].charAt(i + j);
     }
+    const result = mutantPattern.map((xgen) => sequence.includes(xgen));
 
-    for(let j = 1; j < matrix.length; j ++){
-        for(let i = j; i < matrix.length; i++){
-            sequence += matrix[matrix.length - i + j - 1].charAt(i);
-        }
-        let result = mutantPattern.map(xgen => sequence.includes(xgen))
-
-        if (result.includes(true)){
-            return true
-        }
+    if (result.includes(true)) {
+      counter += 1;
     }
+  }
 
-    return false
+  for (let j = 1; j < matrix.length; j++) {
+    for (let i = 0; i < matrix.length; i++) {
+      if (i + j >= matrix.length) break;
+      sequence += matrix[i + j].charAt(i);
+    }
+    const result = mutantPattern.map((xgen) => sequence.includes(xgen));
+
+    if (result.includes(true)) {
+      counter += 1;
+    }
+  }
+
+  return counter;
 }
 
+function leftDiagonal(matrix) {
+  let sequence = '';
+  let counter = 0;
 
-function diagonal (matrix) { 
-    return rightDiagonal(matrix) || leftDiagonal(matrix) 
+  for (let j = 0; j < matrix.length; j++) {
+    for (let i = j; i >= 0; i--) {
+      sequence += matrix[j - i].charAt(i);
+    }
+    const result = mutantPattern.map((xgen) => sequence.includes(xgen));
+
+    if (result.includes(true)) {
+      counter += 1;
+    }
+  }
+
+  for (let j = 1; j < matrix.length; j++) {
+    for (let i = j; i < matrix.length; i++) {
+      sequence += matrix[matrix.length - i + j - 1].charAt(i);
+    }
+    const result = mutantPattern.map((xgen) => sequence.includes(xgen));
+
+    if (result.includes(true)) {
+      counter += 1;
+    }
+  }
+
+  return counter;
 }
+
+function diagonal(matrix) {
+  return rightDiagonal(matrix) + leftDiagonal(matrix);
+}
+
+DNAAnalyzer.isMutant = (sequence) => {
+  const result = horizontal(sequence) + vertical(sequence) + diagonal(sequence);
+
+  if (result >= 2) {
+    return true;
+  }
+  return false;
+};

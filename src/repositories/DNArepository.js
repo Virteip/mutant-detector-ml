@@ -6,8 +6,8 @@ const queryStats = require('../dal/queries/get_mutant_stats');
 DNARepository.isMutant = async (sequence, result) => {
   const value = [sequence, result];
 
-  await db.query(queryInsert.new, value, (err) => {
-    if (err) throw err;
+  db.query(queryInsert.new, value, (err) => {
+    if (err) console.error(err.message);
   });
 
   return result;

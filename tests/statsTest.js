@@ -7,7 +7,7 @@ const DNArepository = require('../src/repositories/DNArepository');
 const defaultResponse = require('./data/defaultData');
 
 const sandbox = sinon.createSandbox();
-const API_PATH = '/api/dna-checker/';
+const API_PATH = '/api/mutant/';
 
 chai.use(chaiHttp);
 
@@ -19,7 +19,7 @@ describe('Provide results for DNA sequence scan', async () => {
 
     return chai
       .request(app)
-      .get(`${API_PATH}/mutant/stats`)
+      .get(`${API_PATH}/stats`)
       .then(({ status }) => {
         assert.equal(status, 200);
       });

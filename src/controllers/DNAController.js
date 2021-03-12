@@ -2,29 +2,41 @@ const DNAController = module.exports;
 const DNAService = require('../services/DNAservice');
 const DNAcheckerSchema = require('../validators/DNAcheckerSchema');
 const Validator = require('../validators/Validator');
+const sequenceValidator = require('../validators/StringValidator');
 
 /**
- * @api {GET} /api/mutant/stats
+ * @api {POST} /api/mutant/
  * @apiName Mutant Detector Meli
- * @apiGroup Mutants Stats
+ * @apiGroup Mutant
  * @apiDescription analyze DNA sequence for mutant genes
+ *
+ * @apiParam (body) {object} object for edit
  *
  * @apiSuccessExample Success Response:
  * HTTP/1.1 200 {"count_mutant_dna":"3","count_human_dna":"6","ratio":0.5}
  *
- * @apiError (500) {Object} Error on internal runtime, should return nothing.
+ * @apiError (500) {Object} Internal error.
+ * @apiError (400) {Object} Request contains wrong body or characters.
+ * @apiError (403) {Object} Subject is human. Such an error.
  */
 DNAController.isMutant = async (req, res) => {
   const { body: dna } = req;
 
-  const dnaSequenceValidator = Validator(DNAcheckerSchema);
-  const valid = dnaSequenceValidator.validate(dna);
+  const bodyValidator = Validator(DNAcheckerSchema);
+  const validBody = bodyValidator.validate(dna);
+  const validSequences = sequenceValidator.containsValidLetters(dna);
 
-  if (!valid) {
-    const [firstInvalid] = dnaSequenceValidator.getError();
+  if (!validBody) {
+    const [firstInvalid] = bodyValidator.getError();
     const invalidMessage = firstInvalid.message;
 
     return res.status(400).send(invalidMessage);
+  }
+
+  if (!validSequences[0]) {
+    const invalidSequence = validSequences[1];
+
+    return res.status(400).send(invalidSequence);
   }
 
   return DNAService.isMutant(dna, res)
@@ -33,17 +45,16 @@ DNAController.isMutant = async (req, res) => {
 };
 
 /**
- * @api {POST} /api/mutant
+ * @api {GET} /api/mutant/stats
  * @apiName Mutant Detector Meli
  * @apiGroup Mutant
  * @apiDescription analyze DNA sequence for mutant genes
  *
- * @apiParam (body) {array} DNA strings.
- *
  * @apiSuccessExample Success Response:
- * HTTP/1.1 200 {} Success if DNA sequence belongs to a mutant
- * @apiError (403) {null} Error if DNA sequence belongs to a human
- * @apiError (500) {Object} Error on internal runtime, should return nothing.
+ * HTTP/1.1 200 {"count_mutant_dna":"39","count_human_dna":"35","ratio":1.11}
+ *
+ * @apiError (400) {null} Error if DNA sequence belongs to a human
+ * @apiError (500) {Object} Internal error.
  */
 DNAController.mutantStats = async (req, res) => {
   const statistics = await DNAService.mutantStats(res);
@@ -51,7 +62,7 @@ DNAController.mutantStats = async (req, res) => {
   statistics.ratio = ((statistics.count_mutant_dna * 100) / statistics.count_human_dna) / 100;
 
   if (!statistics) {
-    return res.status(400).send();
+    return res.status(500).send();
   }
   return res.status(200).send(statistics);
 };

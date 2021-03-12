@@ -4,7 +4,8 @@
   "description": "Mercadolibre Mutants Test",
   "main": "index.js",
   "scripts": {
-    "test": "nyc --lines 80 mocha --bail ./tests"
+    "test": "nyc --lines 80 mocha --bail ./tests",
+    "dev": "nodemon index.js"
   },
   "author": "Sergio Pietri",
   "license": "ISC",
