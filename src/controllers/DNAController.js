@@ -24,7 +24,6 @@ DNAController.isMutant = async (req, res) => {
 
   const bodyValidator = Validator(DNAcheckerSchema);
   const validBody = bodyValidator.validate(dna);
-  const validSequences = sequenceValidator.containsValidLetters(dna);
 
   if (!validBody) {
     const [firstInvalid] = bodyValidator.getError();
@@ -32,6 +31,8 @@ DNAController.isMutant = async (req, res) => {
 
     return res.status(400).send(invalidMessage);
   }
+
+  const validSequences = sequenceValidator.containsValidLetters(dna);
 
   if (!validSequences[0]) {
     const invalidSequence = validSequences[1];

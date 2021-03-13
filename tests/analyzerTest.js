@@ -4,38 +4,110 @@ const defaultData = require('./data/defaultData');
 
 describe('Provide results for DNA sequence scan', async () => {
   it('Should get true for 2 horizontal sequence analysis', async () => {
-    const mutantCheck = helpers.isMutant(defaultData.horizontalPositiveDnaSequence.dna);
+    let count = 0;
+    let result = false;
+    const { mutantPatterns } = defaultData;
 
-    expect(mutantCheck).to.equal(true);
+    for (let index = 0; index < mutantPatterns.length; index++) {
+      if (helpers.isMutant(defaultData.horizontalPositiveDnaSequence.dna, mutantPatterns[index])) {
+        count += 1;
+      }
+    }
+
+    if (count > 1) {
+      result = true;
+    }
+
+    expect(result).to.equal(true);
   });
 
   it('Should get false for 1 horizontal sequence analysis', async () => {
-    const mutantCheck = helpers.isMutant(defaultData.horizontalNegativeDnaSequence.dna);
+    let count = 0;
+    let result = false;
+    const { mutantPatterns } = defaultData;
 
-    expect(mutantCheck).to.equal(false);
+    for (let index = 0; index < mutantPatterns.length; index++) {
+      if (helpers.isMutant(defaultData.horizontalNegativeDnaSequence.dna, mutantPatterns[index])) {
+        count += 1;
+      }
+    }
+
+    if (count > 1) {
+      result = true;
+    }
+
+    expect(result).to.equal(false);
   });
 
   it('Should get true for 2 vertical sequence analysis', async () => {
-    const mutantCheck = helpers.isMutant(defaultData.verticalPositiveDnaSequence.dna);
+    let count = 0;
+    let result = false;
+    const { mutantPatterns } = defaultData;
 
-    expect(mutantCheck).to.equal(true);
+    for (let index = 0; index < mutantPatterns.length; index++) {
+      if (helpers.isMutant(defaultData.verticalPositiveDnaSequence.dna, mutantPatterns[index])) {
+        count += 1;
+      }
+    }
+
+    if (count > 1) {
+      result = true;
+    }
+
+    expect(result).to.equal(true);
   });
 
   it('Should get false for 1 vertical sequence analysis', async () => {
-    const mutantCheck = helpers.isMutant(defaultData.verticalNegativeDnaSequence.dna);
+    let count = 0;
+    let result = false;
+    const { mutantPatterns } = defaultData;
 
-    expect(mutantCheck).to.equal(false);
+    for (let index = 0; index < mutantPatterns.length; index++) {
+      if (helpers.isMutant(defaultData.verticalNegativeDnaSequence.dna, mutantPatterns[index])) {
+        count += 1;
+      }
+    }
+
+    if (count > 1) {
+      result = true;
+    }
+
+    expect(result).to.equal(false);
   });
 
-  it('Should get true for right diagonal sequence analysis', async () => {
-    const mutantCheck = helpers.isMutant(defaultData.rightDiagonalDnaSequence.dna);
+  it('Should get false for right diagonal sequence analysis', async () => {
+    let count = 0;
+    let result = false;
+    const { mutantPatterns } = defaultData;
 
-    expect(mutantCheck).to.equal(true);
+    for (let index = 0; index < mutantPatterns.length; index++) {
+      if (helpers.isMutant(defaultData.rtNegativeDiagonalDnaSequence.dna, mutantPatterns[index])) {
+        count += 1;
+      }
+    }
+
+    if (count > 1) {
+      result = true;
+    }
+
+    expect(result).to.equal(true);
   });
 
   it('Should get true for left diagonal sequence analysis', async () => {
-    const mutantCheck = helpers.isMutant(defaultData.leftDiagonalDnaSequence.dna);
+    let count = 0;
+    let result = false;
+    const { mutantPatterns } = defaultData;
 
-    expect(mutantCheck).to.equal(true);
+    for (let index = 0; index < mutantPatterns.length; index++) {
+      if (helpers.isMutant(defaultData.ltNegativeDiagonalDnaSequence.dna, mutantPatterns[index])) {
+        count += 1;
+      }
+    }
+
+    if (count > 1) {
+      result = true;
+    }
+
+    expect(result).to.equal(false);
   });
 });

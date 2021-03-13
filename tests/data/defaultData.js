@@ -6,6 +6,7 @@ defaultData.stats = {
   count_human_dna: '6',
   ratio: 0.5,
 };
+defaultData.mutantPatterns = ['AAAA', 'TTTT', 'CCCC', 'GGGG'];
 defaultData.horizontalNegativeDnaSequence = {
   dna: ['CTGCCA', 'CAGTGC', 'TTCTGT', 'AGAAGG', 'CCCCTA', 'TCACTG'],
 };
@@ -18,9 +19,9 @@ defaultData.verticalNegativeDnaSequence = {
 defaultData.verticalPositiveDnaSequence = {
   dna: ['CTGCGA', 'CAGTGC', 'TTCTGT', 'ACATGG', 'CTCTTA', 'TCACTG'],
 };
-defaultData.rightDiagonalDnaSequence = {
+defaultData.rtNegativeDiagonalDnaSequence = {
   dna: ['CTGCGA', 'CCGTGC', 'TTCTGT', 'ACACGG', 'CTCTTA', 'TCACTG'],
 };
-defaultData.leftDiagonalDnaSequence = {
+defaultData.ltNegativeDiagonalDnaSequence = {
   dna: ['CTGCGA', 'CTGTAC', 'TTCAGT', 'ACACGG', 'CTCTTA', 'TCACTG'],
 };
